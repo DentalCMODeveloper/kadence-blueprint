@@ -14,6 +14,6 @@ done < required-plugins.txt
 wp import kadence-elements.xml --authors=create
 
 # Import Reusable Blocks
-wp import patterns.xml --authors=create
+wp import reusable-blocks.xml --authors=create
 
 echo "----- Setup Complete -----"
