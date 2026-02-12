@@ -11,6 +11,10 @@ Follow these steps to deploy the Kadence Blueprint on a new site.
 Copy and paste the command under Kinsta > Sites > Environment > Info > Primary SFTP/SSH user > SSH terminal command
 (i.e. ssh elizabethkadence@00.000.00.000 -p port)
 
+Type 'yes' if prompted to save fingerprint
+
+Enter password in same 'Primary SFTP/SSH user' section
+
 ## 2. Navigate to the WordPress root
 
 cd public
@@ -19,7 +23,6 @@ You should see folders like:
 wp-admin
 wp-content
 wp-config.php
-kadence-blueprint
 
 ## 3. Clone the blueprint
 
