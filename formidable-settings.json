@@ -1,0 +1,176 @@
+\FrmSettings::__set_state(array(
+   'option_name' => 'frm_options',
+   'menu' => 'Formidable',
+   'mu_menu' => 0,
+   'fade_form' => 0,
+   'admin_bar' => 0,
+   'success_msg' => 'Your responses were successfully submitted. Thank you!',
+   'blank_msg' => '[field_name] cannot be blank.',
+   'unique_msg' => '[field_name] must be unique.',
+   'invalid_msg' => 'There was a problem with your submission. Errors are marked below.',
+   'failed_msg' => 'We\'re sorry. It looks like you\'ve already submitted that.',
+   'submit_value' => 'Submit',
+   'login_msg' => 'You do not have permission to view this form.',
+   'admin_permission' => 'You do not have permission to do that',
+   'email_to' => '[admin_email]',
+   'load_style' => 'all',
+   'custom_style' => true,
+   'active_captcha' => 'recaptcha',
+   'pubkey' => '6LeouIYfAAAAADR09zFpv49hv_1KyacEw18-wzrt',
+   'privkey' => '6LeouIYfAAAAAJFA4iTX2MAaPj6va_3hlbmPb7rQ',
+   're_lang' => '',
+   're_type' => 'v3',
+   're_msg' => 'The CAPTCHA was not entered correctly',
+   're_multi' => 1,
+   're_threshold' => 0.5,
+   'hcaptcha_pubkey' => '',
+   'hcaptcha_privkey' => '',
+   'turnstile_pubkey' => '',
+   'turnstile_privkey' => '',
+   'no_ips' => 0,
+   'custom_header_ip' => 0,
+   'current_form' => 0,
+   'tracking' => 1,
+   'summary_emails' => 1,
+   'summary_emails_recipients' => '[admin_email]',
+   'default_email' => 'elizabeth@getlumn.com',
+   'from_email' => 'dev@getlumn.com',
+   'currency' => 'USD',
+   'custom_css' => '/* Kadence Global Colors */
+
+/* Accents */
+/* --global-palette1 */ /* 1 - Accent */
+/* --global-palette2 */ /* 2 - Accent - alt */
+/* --global-palette10 */ /* 10 - Accent - Compliment */
+
+/* Contrast */
+/* --global-palette3 */ /* 3 - Strongest text */
+/* --global-palette4 */ /* 4 - Strong text */
+/* --global-palette5 */ /* 5 - Medium text */
+/* --global-palette6 */ /* 6 - Subtle text */
+
+/* Base */
+/* --global-palette7 */ /* 7 - Subtle background */
+/* --global-palette8 */ /* 8 - Lighter background */
+/* --global-palette9 */ /* 9 - White or offwhite */
+
+/* Kadence Global Buttons */
+/* --global-palette-btn-bg */ /* Button background */
+/* --global-palette-btn */ /* Button color */
+
+/* --global-palette-btn-hover */ /* Button background hover */
+/* --global-palette-btn-bg-hover */ /* Button color hover */
+
+/* Kadence Global Fonts */
+/* --global-body-font-family */ /* Body font */
+/* --global-heading-font-family */ /* Heading font */
+
+/* Buttons */
+div.frm_style_formidable-style.with_frm_style .frm_compact .frm_dropzone.dz-clickable .dz-message, div.frm_style_formidable-style.with_frm_style .frm-edit-page-btn, .frm_style_formidable-style.with_frm_style input[type=submit], div.frm_style_formidable-style.with_frm_style .frm_submit input[type=button], div.frm_style_formidable-style.with_frm_style .frm_submit button, .frm_form_submit_style {
+	background: var(--global-palette-btn-bg);
+	color: var(--global-palette-btn);
+	font-family: var(--global-body-font-family);
+	/* Custom styling below */
+	border: 0px solid rgba(0,0,0,0);
+	border-radius: 4px;
+	padding: 20px 40px 20px 40px;
+}
+
+/* Buttons - Hover */
+div.frm_style_formidable-style.with_frm_style .frm-edit-page-btn:hover, div.frm_style_formidable-style.with_frm_style input[type=submit]:hover, div.frm_style_formidable-style.with_frm_style .frm_submit input[type=button]:hover, div.frm_style_formidable-style.with_frm_style .frm_submit button:hover {
+	background: var(--global-palette-btn-bg-hover);
+	color: var(--global-palette-btn-hover);
+	/* Custom styling below */
+}',
+   'honeypot' => 1,
+   'wp_spam_check' => 0,
+   'denylist_check' => 1,
+   'installed_after_welcome_tour_update' => NULL,
+   'disallowed_words' => '100% guaranteed
+backlinks
+bitcoin
+blog outreach
+cash app
+cialis
+click here
+content marketing
+content writing
+crypto
+DA 50+
+dear admin
+digital marketing
+dofollow
+domain authority
+earn money
+forex
+guest post
+hemp
+investment
+kraken
+link exchange
+make money fast
+marijuana
+nude
+pagerank
+payday loan
+porn
+seo
+sex
+traffic
+urgent response
+viagra
+visit our site
+web design
+work from home
+xxx
+ai-driven',
+   'allowed_words' => '',
+   'new_tab_msg' => 'The page has been opened in a new tab.',
+   'enable_gdpr' => 0,
+   'no_gdpr_cookies' => 0,
+   'frm_view_forms' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_edit_forms' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_delete_forms' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_change_settings' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_view_entries' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_delete_entries' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_create_entries' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_edit_entries' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_view_reports' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_edit_applications' => 
+  array (
+    0 => 'administrator',
+  ),
+   'frm_application_dashboard' => 
+  array (
+    0 => 'administrator',
+  ),
+   'email_style' => 'classic',
+))
