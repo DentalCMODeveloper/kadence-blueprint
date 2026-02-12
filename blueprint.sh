@@ -28,13 +28,6 @@ fi
 # Load licenses
 source .licenses
 
-# Verify licenses
-echo "Verifying licenses..."
-
-wp option get frmpro_license
-wp option get perfmatters_license_key
-wp option get kt_api_manager_kadence_theme
-
 STEP_FILE=".kadence_step"
 
 # Read step
@@ -125,39 +118,48 @@ if [ "$STEP" -lt 5 ]; then
   echo "5" > "$STEP_FILE"
 fi
 
+# Verify licenses
+echo "Verifying licenses..."
+
+wp option get frmpro_license
+wp option get perfmatters_license_key
+wp option get kt_api_manager_kadence_theme
+
 wp cron event run --due-now >/dev/null 2>&1 || true
 
 ############################################
 # STEP 6 — Import Formidable Forms (XML)
 ############################################
-FORM_COUNT=$(wp db query "SELECT COUNT(*) FROM wp_frm_forms;" --skip-column-names)
-
-if [ "$FORM_COUNT" -eq 0 ]; then
-  # run import
-fi
-
 if [ "$STEP" -lt 6 ]; then
-  echo "Importing Formidable forms..."
+  echo "Checking if Formidable forms exist..."
 
-  if [ -f "formidable-forms.xml" ]; then
-    wp eval '
-    if ( class_exists("FrmXMLController") ) {
-        $xml_file = "formidable-forms.xml";
-        FrmXMLController::import_xml( $xml_file );
-        echo "Forms imported.\n";
-    } else {
-        echo "Formidable importer not available.\n";
-    }
-    '
+  FORM_COUNT=$(wp db query "SELECT COUNT(*) FROM wp_frm_forms;" --skip-column-names)
+
+  if [ "$FORM_COUNT" -eq 0 ]; then
+    echo "Importing Formidable forms..."
+
+    if [ -f "formidable-forms.xml" ]; then
+      wp eval '
+      if ( class_exists("FrmXMLController") ) {
+          $xml_file = "formidable-forms.xml";
+          FrmXMLController::import_xml( $xml_file );
+          echo "Forms imported.\n";
+      } else {
+          echo "Formidable importer not available.\n";
+      }
+      '
+    fi
+  else
+    echo "Formidable forms already exist — skipping import."
+  fi
+
+  if [ -f "formidable-settings.json" ]; then
+    echo "Importing Formidable settings..."
+    wp option update frm_options "$(cat formidable-settings.json)"
   fi
 
   echo "6" > "$STEP_FILE"
 fi
-
-echo "Importing Formidable settings..."
-
-wp option update frm_options "$(cat formidable-settings.json)"
-
 
 ############################################
 # STEP 7 — Custom Plugins (Git Pull/Clone)
@@ -195,14 +197,13 @@ fi
 if [ "$STEP" -lt 8 ]; then
   echo "Importing WPCode snippets..."
   wp import wpcode-snippets.xml --authors=create --quiet || true
-  echo "7" > "$STEP_FILE"
+
+  echo "Activating WPCode snippets..."
+  wp post list --post_type=wpcode --format=ids | while read id; do
+    wp post meta update "$id" _wpcode_active 1
+  done
+  echo "8" > "$STEP_FILE"
 fi
-
-echo "Activating WPCode snippets..."
-
-wp post list --post_type=wpcode --format=ids | while read id; do
-  wp post meta update "$id" _wpcode_active 1
-done
 
 ############################################
 # STEP 9 — Import Elements + Blocks
