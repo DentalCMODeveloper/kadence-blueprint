@@ -30,6 +30,10 @@ git clone git@github.com:DentalCMODeveloper/kadence-blueprint.git
 
 ## 4. Run the blueprint
 
+# First time
+bash blueprint.sh
+
+# Every other time
 wp blueprint deploy
 
 The system will now:
@@ -49,7 +53,8 @@ On first run, you may see an SSH key displayed.
 2. Go to GitHub → Settings → SSH Keys
 3. Click New SSH Key
 4. Paste and save
-5. Rerun: wp blueprint deploy
+5. Run: bash blueprint.sh
+5. Reruns: wp blueprint deploy
 
 ## 5. (Optional) Use a Child Theme
 
@@ -99,12 +104,18 @@ Running the Blueprint will:
 2. Navigate to the WordPress root:
    cd public
 3. Run
+   # First time
+   bash blueprint.sh
+   # Every other time
    wp blueprint deploy
 4. If prompted, add the displayed SSH key to GitHub:
    GitHub → Settings → SSH Keys
 5. Rerun the command after adding the key
 
 ## Standard Deployment
+# First time
+bash blueprint.sh
+# Every other time
 wp blueprint deploy
 
 ## Deploy with a child theme
@@ -130,6 +141,9 @@ wp blueprint deploy
 ## After pulling updates to this repo
 cd kadence-blueprint
 git pull
+# First time
+bash blueprint.sh
+# Every other time
 wp blueprint deploy
 
 ## Repository structure
@@ -245,4 +259,7 @@ git push origin main
 ## 7. Deploy Updated Blueprint to a Site
 cd kadence-blueprint
 git pull
+# First time
+bash blueprint.sh
+# All following
 wp blueprint deploy

@@ -154,8 +154,19 @@ if [ "$STEP" -lt 6 ]; then
   fi
 
   if [ -f "formidable-settings.json" ]; then
-    echo "Importing Formidable settings..."
-    wp option update frm_options "$(cat formidable-settings.json)"
+    echo "Importing Formidable settings correctly..."
+
+    wp eval '
+    $json = file_get_contents("formidable-settings.json");
+    $data = json_decode($json, true);
+
+    if ( is_array($data) ) {
+      update_option("frm_options", $data);
+      echo "Formidable settings applied.\n";
+    } else {
+      echo "Invalid Formidable settings file.\n";
+    }
+  '
   fi
 
   echo "6" > "$STEP_FILE"
@@ -192,28 +203,93 @@ if [ "$STEP" -lt 7 ]; then
 fi
 
 ############################################
-# STEP 8 — Import WPCode Snippets
+# STEP 8 — Import WPCode Snippets (JSON)
 ############################################
 if [ "$STEP" -lt 8 ]; then
-  echo "Importing WPCode snippets..."
-  wp import wpcode-snippets.xml --authors=create --quiet || true
+  SNIPPET_COUNT=$(wp post list --post_type=wpcode --format=count)
 
-  echo "Activating WPCode snippets..."
-  wp post list --post_type=wpcode --format=ids | while read id; do
-    wp post meta update "$id" _wpcode_active 1
-  done
+  if [ "$SNIPPET_COUNT" -eq 0 ]; then
+
+    echo "Importing WPCode snippets from JSON..."
+
+    if [ -s "wpcode-snippets.json" ]; then
+      wp eval '
+      if ( function_exists("wpcode") ) {
+          $file = "wpcode-snippets.json";
+          $json = file_get_contents($file);
+          $data = json_decode($json, true);
+
+          if ( ! empty($data["snippets"]) ) {
+              foreach ( $data["snippets"] as $snippet ) {
+                  $post_id = wp_insert_post([
+                      "post_type"   => "wpcode",
+                      "post_title"  => $snippet["title"],
+                      "post_status" => "publish",
+                  ]);
+
+                  if ( $post_id ) {
+                      foreach ( $snippet as $key => $value ) {
+                          update_post_meta($post_id, "_wpcode_" . $key, $value);
+                      }
+                  }
+              }
+
+              echo "WPCode snippets imported.\n";
+          } else {
+              echo "No snippets found in JSON.\n";
+          }
+      } else {
+          echo "WPCode not loaded.\n";
+      }
+      '
+    else
+      echo "WPCode JSON missing or empty — skipping."
+    fi
+
+    echo "Activating WPCode snippets..."
+
+    wp post list --post_type=wpcode --format=ids | while read id; do
+      wp post meta update "$id" _wpcode_active 1
+    done
+    else
+      echo "WPCode snippets already exist — skipping."
+    fi
+
   echo "8" > "$STEP_FILE"
 fi
 
 ############################################
-# STEP 9 — Import Elements + Blocks
+# STEP 9 — Import Kadence Elements + Blocks
 ############################################
 if [ "$STEP" -lt 9 ]; then
+  echo "Preparing Kadence Elements import..."
+
+  # Force WordPress to initialize CPTs
+  wp eval 'do_action("init");'
+
+  # Check CPT exists
+  wp eval '
+  if ( ! post_type_exists("kadence_element") ) {
+      echo "ERROR: kadence_element post type not registered.\n";
+      exit(1);
+  } else {
+      echo "Kadence Element post type confirmed.\n";
+  }
+  '
+
   echo "Importing Kadence Elements..."
-  wp import kadence-elements.xml --authors=create --quiet
+  if [ -s "kadence-elements.xml" ]; then
+    wp import kadence-elements.xml --authors=create --quiet
+  else
+    echo "Kadence elements XML missing or empty — skipping."
+  fi
 
   echo "Importing Reusable Blocks..."
-  wp import reusable-blocks.xml --authors=create --quiet
+  if [ -s "reusable-blocks.xml" ]; then
+    wp import reusable-blocks.xml --authors=create --quiet
+  else
+    echo "Reusable blocks XML missing or empty — skipping."
+  fi
 
   echo "9" > "$STEP_FILE"
 fi
@@ -224,8 +300,15 @@ fi
 if [ "$STEP" -lt 10 ]; then
   echo "Checking Customizer CLI..."
 
-  if ! wp customizer --help >/dev/null 2>&1; then
-    wp package install wp-cli/customizer-command --quiet
+  if ! wp help customizer >/dev/null 2>&1; then
+    echo "Installing Customizer CLI package..."
+    wp package install https://github.com/wp-cli/customizer-command.git --quiet || {
+      echo "Customizer CLI install failed — skipping customizer import."
+      echo "10" > "$STEP_FILE"
+      exit 0
+    }
+  else
+    echo "Customizer CLI already installed."
   fi
 
   echo "10" > "$STEP_FILE"
