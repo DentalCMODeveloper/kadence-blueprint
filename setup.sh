@@ -34,22 +34,37 @@ wp plugin install premium-plugins/kadence-woocommerce-email-designer.zip --activ
 wp plugin install premium-plugins/kadence-woo-extras.2.4.13.zip --activate
 
 # Install custom Plugins
-echo "Installing custom plugins from GitHub..."
+echo "Installing/updating custom plugins from GitHub..."
+
 cd ../wp-content/plugins
 
-# Remove existing copies
-rm -rf lumn-utilities-2
-rm -rf LUMN-Prospecta
+# ---- LUMN Utilities ----
+if [ -d "lumn-utilities-2" ]; then
+  echo "Updating lumn-utilities-2..."
+  cd lumn-utilities-2
+  git pull origin main
+  cd ..
+else
+  echo "Cloning lumn-utilities-2..."
+  git clone git@github.com:DentalCMODeveloper/lumn-utilities-2.git
+fi
 
-# Clone plugins
-git clone git@github.com:DentalCMODeveloper/lumn-utilities-2.git
-git clone git@github.com:DentalCMODeveloper/LUMN-Prospecta.git
+# ---- LUMN Prospecta ----
+if [ -d "LUMN-Prospecta" ]; then
+  echo "Updating LUMN-Prospecta..."
+  cd LUMN-Prospecta
+  git pull origin main
+  cd ..
+else
+  echo "Cloning LUMN-Prospecta..."
+  git clone git@github.com:DentalCMODeveloper/LUMN-Prospecta.git
+fi
 
 cd ../../kadence-blueprint
 
-# Activate plugins
+# Activate plugins (safe even if already active)
 wp plugin activate lumn-utilities-2
-wp plugin activate LUMN-Prospecta-main
+wp plugin activate LUMN-Prospecta
 
 # Import Kadence Elements
 wp import kadence-elements.xml --authors=create
